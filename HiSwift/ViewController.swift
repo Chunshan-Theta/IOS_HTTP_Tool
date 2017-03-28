@@ -42,7 +42,7 @@ class ViewController: UIViewController {
         
         let task = URLSession.shared.dataTask(with: url! as URL) {
             (data, response, error)->Void in if data != nil{
-                print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as! String)
+                //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as! String)
                 ReData = NSString(data: data!, encoding: String.Encoding.utf8.rawValue) as! String
                 
             }else{print("no data error") }
@@ -51,18 +51,19 @@ class ViewController: UIViewController {
         
         
         task.resume()
-        sleep(1)
+        while ReData == "init"{
+             //print("wait responds")
+        }
         return ReData
         
         
     }
     func HTTPRequest_Post()->String{
         var ReData : String = "init"
-        ReData = "init2"
         // Set up the URL request
-        var request = URLRequest(url: URL(string: "http://www.thisismylink.com/postName.php")!)
+        var request = URLRequest(url: URL(string: "http://140.130.36.111/api/AccountApi/getToken")!)
         request.httpMethod = "POST"
-        let postString = "id=13&name=Jack"
+        let postString = "email=teacher@gmail.com&pswd=swater0"
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {                                                 // check for fundamental networking error
@@ -75,10 +76,15 @@ class ViewController: UIViewController {
                 print("response = \(response)")
             }
             
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
+            //let responseString = String(data: data, encoding: .utf8)
+            //print("responseString = \(responseString)")
+            ReData = String(data: data, encoding: .utf8) ?? "responds can't convert 2 String"
+            //print(ReData)
         }
         task.resume()
+        while ReData == "init"{
+            //print("wait responds")
+        }
         return ReData
     }
     
